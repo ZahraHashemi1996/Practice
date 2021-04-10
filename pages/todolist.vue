@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     creatTask() {
-      this.data = this.items.push(this.task);
+      this.items.push(this.task);
       this.task = "";
     },
     checklist() {
