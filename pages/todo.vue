@@ -1,8 +1,5 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    item : {{ items }}
-    <br />
-    completed {{ CompletedTasks }}
     <div class="w-50 d-flex justify-center align-center">
       <v-text-field
         label="Type to add task"
