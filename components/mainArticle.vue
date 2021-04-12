@@ -27,13 +27,11 @@ export default {
       items: [],
     };
   },
-  methods: {
-    async mounted() {
-      let respons = await this.$axios.get(
-        "https://www.mobit.ir/api/web/v6/promotion/index?expand=product,product.src"
-      );
-      this.items = respons.data.items;
-    },
+  async mounted() {
+    let respons = await this.$axios.get(
+      "https://www.mobit.ir/api/web/v6/promotion/index?expand=product,product.src"
+    );
+    this.items = respons.data.items;
   },
 };
 </script>
