@@ -16,7 +16,9 @@
       </div>
 
       <v-list-item>{{
-        data && data.location && data.location.name
+        data &&
+          data.location &&
+          data.location.name + ",&nbsp;" + data.location.country
       }}</v-list-item>
       <v-list-item>{{
         data && data.location && data.location.localtime
@@ -25,59 +27,18 @@
         <v-list-item>
           {{
             data &&
-            data.current &&
-            data.current.condition &&
-            data.current.condition.text
+              data.current &&
+              data.current.condition &&
+              data.current.condition.text
           }}
         </v-list-item>
-        <span
-          v-if="
-            data &&
-            data.current &&
-            data.current.condition &&
-            data.current.condition.text === 'Sunny'
-          "
-        >
-          <img src="@/assets/img/sun.png" width="100" height="100" />
-        </span>
-        <span
-          v-else-if="
-            data &&
-            data.current &&
-            data.current.condition &&
-            data.current.condition.text === 'Partly cloudy'
-          "
-        >
-          <img src="@/assets/img/clud.png" width="100" height="100" />
-        </span>
-        <span
-          v-else-if="
-            data &&
-            data.current &&
-            data.current.condition &&
-            data.current.condition.text === 'Partly rainy'
-          "
-          ><img src="@/assets/img/rain.png" width="100" height="100" />
-        </span>
-        <span
-          v-else-if="
-            data &&
-            data.current &&
-            data.current.condition &&
-            data.current.condition.text === 'Partly snow'
-          "
-          ><img src="@/assets/img/snow.jpg" width="100" height="100" />
-        </span>
-        <span
-          v-else-if="
-            data &&
-            data.current &&
-            data.current.condition &&
-            data.current.condition.text === 'Clear'
-          "
-          ><img src="@/assets/img/clear.jpg" width="100" height="100" />
-        </span>
       </div>
+      <img
+        v-if="isDataExist"
+        :src="require(`assets/img/weather/${getIconCode()}`)"
+        width="64"
+        height="64"
+      />
     </div>
   </div>
 </template>
@@ -87,7 +48,7 @@ export default {
   data() {
     return {
       city: "",
-      data: "",
+      data: ""
     };
   },
   methods: {
@@ -96,11 +57,23 @@ export default {
         .$get(
           `http://api.weatherapi.com/v1/current.json?key=a782c16718044942ba4190346212803&q=${this.city}&aqi=no`
         )
-        .then((res) => {
+        .then(res => {
           this.data = res;
         });
     },
-  },
+    getIconCode() {
+      let code = this.data?.current?.condition?.icon.split("/");
+      if (code) {
+        return code[6];
+      } else {
+        return "unknown.png";
+      }
+    },
+    isDataExist() {
+      let hasNumber = /\d/;
+      return hasNumber.test(this.data?.current?.condition?.icon);
+    }
+  }
 };
 </script>
 
